@@ -1,0 +1,130 @@
+#include <Arduino.h>
+
+// Ardwinner CODE-005-Compteur_bouton_poussoir
+// Crée un compteur permettant d'indiquer le nombre de fois où le bouton a été appuyé.
+
+//Sources
+/* code inspiré du site http://www.mon-club-elec.fr/pmwiki_reference_arduino/pmwiki.php?n=Main.ExempleButtonStateChange */
+
+
+// Présentation :
+/* Le code permet d'illustrer ce qu'est une détection de Front, appelée également un edétection de changement d'état. */
+
+
+// principe de base :
+/* Au lieu de continuer à exécuter son loop en continue, lorsque le  programme détecte que l'on appuie sur le bouton 
+  poussoir, celui-ci stoppe le loop par une interruption et prendre ainsi en compte ce changement d'état et repartir 
+  avec une nouvelle donnée : l'état actuel du bouton poussoir qui maintenant est modifié.. */
+
+
+// Notes de montage :
+/* Ce montage très simple est constitué d'un bouton poussoir relié d'une part au 5V de l'Arduino, puis la Pin face 
+   à cette dernière reliée à la broche 4 de l'Arduino, et finalement sur la broche adjacente à celle branchée sur 
+   le 5V, on branche une résistance de 10kΩ, elle-même reliée au ground de l'Arduino.
+
+   On peut également brancher une led sur la broche 13 et le ground de l'Arduino, sans résistance. En effet, 
+   celle-ci est intégré à la broche 13 de l'Arduino.
+   
+   La résistance de 10kΩ est dite en pulldown car elle est branchée au ground. Elle a pour fonction de limiter le
+   nombre de détection lors de l'appui. En effet, l'Arduino fonstionne tellement vite par rapport à un être humain
+   qu'entre le moment où nous appuyons sur le bouton et que nous le relâchons, l'Arduino effectue plusieurs mesure
+   ce qui peut provoquer des états différents alors que nous n'avons pas fini d'appuyer dessus. */ 
+ 
+
+/*//////////////////////////////////////////////////////////////// zone de déclaration des variables et des constantes //////////////////////////////////////////////////////////////////////////////////////////// */
+
+// déclaration des constantes --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+const int  bouton = 22;
+const int bouton2 = 24;                  /* crée une constante de type "int" nommée "bouton" et affectée à la broche 4 de l'Arduino. */
+const int ledtemoin = 13;
+const int ledtemoin2 = 12;         /* crée une constante de type "int" nommée "ledtemoin" et affectée à la broche 13 de l'Arduino. Celle-ci nous servira de led témoin qui nous 
+                                           permettra de visualiser à chaque fois que l'on appuyera sur le bouton que notre action à bien été prise en compte. */
+
+// déclaration des variables ----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+int compteur = 0;                       /* crée une variable de type "int" nommée "compteur" et initialisée à 0. Celle-ci servira de compteur. */
+int etatbouton = 0;                     /* crée une variable de type "int" nommée "etatbouton" et initialisée à 0. Celle-ci servira à définir l'état actuel du bouton. */
+int etatboutonprecedent = 0;            /* crée une variable de type "int" nommée "etatboutonprecedent" et initialisée à 0. Celle-ci servira à donner l'état du bouton avant le changement 
+                                           d'état. */
+
+int compteur2 = 0;                       /* crée une variable de type "int" nommée "compteur" et initialisée à 0. Celle-ci servira de compteur. */
+int etatbouton2 = 0;                     /* crée une variable de type "int" nommée "etatbouton" et initialisée à 0. Celle-ci servira à définir l'état actuel du bouton. */
+int etatboutonprecedent2 = 0;            /* crée une variable de type "int" nommée "etatboutonprecedent" et initialisée à 0. Celle-ci servira à donner l'état du bouton avant le changement 
+                                           d'état. */
+
+
+/*////////////////////////////////////////////////////////// void setup (initialisation du programme, qui ne s'éxécute qu'une fois)////////////////////////////////////////////////////////////////////////////// */
+
+void setup() {
+
+  pinMode(bouton, INPUT_PULLUP);               /* définie la broche connectée à la variable "bouton" comme étant une entrée (donc ici la broche 4). */
+  pinMode(bouton2, INPUT_PULLUP);
+
+  pinMode(ledtemoin, OUTPUT);           /* définie la broche connectée à la variable "ledtemoin" comme étant une sortie (donc ici la broche 13). */
+  pinMode(ledtemoin2, OUTPUT);
+
+  Serial.begin(9600);                   /* définie le taux de transfert de donnée à 9600 bauds. */
+
+}
+
+
+
+/*//////////////////////////////////////////////////////////////// void loop (boucle du programme qui s'éxécute à l'infinie)////////////////////////////////////////////////////////////////////////////////////// */
+
+void loop() {
+
+  //Bouton 1
+
+  etatbouton = digitalRead(bouton);     /* on lit l'état actuel du bouton poussoir par la commande digitalRead, que l'on stocke et mémorise dans
+                                           la variable "etatbouton" */
+
+  if (etatbouton != etatboutonprecedent) {  /* si la valeur de la variable "etatbouton" est différente de la variable "etatboutonprecedent" */
+
+    if (etatbouton == HIGH) {           /* et si on appuie sur le bouton poussoir. */ 
+      compteur++;                       /* alors on incrémente le compteur, on l'augmente de 1 à chaque appuis. */
+      digitalWrite (ledtemoin, HIGH);
+      delay (500);
+      digitalWrite (ledtemoin, LOW);
+
+      Serial.println("APPUI");          /* on affiche dans le moniteur série le message "APPUI" */
+      Serial.print("nombre d'appuis:  "); /* puis à la ligne on affiche "nombre d'appuis :" */
+      Serial.println(compteur, DEC);    /* et on affiche finalement la valeur de la variable "compteur" */
+    }
+    else {                              /* sinon */
+      Serial.println("PAS D'APPUI");    /* on affiche dans le moniteur série "PAS D'APUUI" */
+    }
+
+    etatboutonprecedent = etatbouton;   /* pour finir on mémorise l'état de la variable "etatbouton" comme étant celle maintenant de "etatboutonprecedent" */
+    }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+//Bouton 2
+    etatbouton2 = digitalRead(bouton2);     /* on lit l'état actuel du bouton poussoir par la commande digitalRead, que l'on stocke et mémorise dans
+                                           la variable "etatbouton" */
+
+  if (etatbouton2 != etatboutonprecedent2) {  /* si la valeur de la variable "etatbouton" est différente de la variable "etatboutonprecedent" */
+
+    if (etatbouton2 == HIGH) {           /* et si on appuie sur le bouton poussoir. */ 
+      compteur2++;                       /* alors on incrémente le compteur, on l'augmente de 1 à chaque appuis. */
+      digitalWrite (ledtemoin2, HIGH);
+      delay (500);
+      digitalWrite (ledtemoin2, LOW);
+
+      Serial.println("APPUI");          /* on affiche dans le moniteur série le message "APPUI" */
+      Serial.print("nombre d'appuis:  "); /* puis à la ligne on affiche "nombre d'appuis :" */
+      Serial.println(compteur2, DEC);    /* et on affiche finalement la valeur de la variable "compteur" */
+    }
+    else {                              /* sinon */
+      Serial.println("PAS D'APPUI");    /* on affiche dans le moniteur série "PAS D'APUUI" */
+    }
+
+    etatboutonprecedent2 = etatbouton2;   /* pour finir on mémorise l'état de la variable "etatbouton" comme étant celle maintenant de "etatboutonprecedent" */
+    }
+
+
+
+}
