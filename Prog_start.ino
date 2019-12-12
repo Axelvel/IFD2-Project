@@ -1,13 +1,13 @@
 // décalration des constantes
 
-const int bouton1 = 14;
-const int bouton2 = 15;
-const int bouton3 = 16;
-const int bouton4 = 17;
-const int bouton5 = 18;
-const int bouton6 = 19;
-const int bouton7 = 20;
-const int bouton8 = 21;
+const int bouton1 = 48;
+const int bouton2 = 49;
+const int bouton3 = 50;
+const int bouton4 = 51;
+const int bouton5 = 52;
+const int bouton6 = 53;
+const int bouton7 = 8;
+const int bouton8 = 9;
 
 
 
