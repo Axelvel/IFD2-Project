@@ -371,7 +371,7 @@ void setup() {
   
   //Setup pins
   for (int i = 22; i =< 46; i++){
-        pinMode(i, OUTPUT);       
+        pinMode(i, OUTPUT);  //Ou OUTPUT_OPEN_DRAIN
       }
   
   //Setup Bouttons
