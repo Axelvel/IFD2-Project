@@ -371,11 +371,25 @@ void chenillard()
 
 void setup() {
   // put your setup code here, to run once:
+  
+  Serial.begin(9600);
+  
+  //Setup pins
+  for (int i = 22; i =< 46; i++){
+        pinMode(i, OUTPUT);       
+      }
+  
+  //Setup Bouttons
+    for (int i = 48; i =< 53; i++){
+        pinMode(i, INPUT);
+      }
+    pinMode(8, INPUT);
+    pinMode(9, INPUT);       
+  
+    
   allumer_tout();
   delay(5000);
   eteindre_tout();
-
-  Serial.begin(9600);
 }
 
 
