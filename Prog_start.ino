@@ -182,12 +182,7 @@ void f_bouton8()
 
 void soluce(){
   eteindre_tout();
-  f_bouton1();
-  f_bouton4();
-  f_bouton2();
-  f_bouton3();
-  f_bouton8();
-  f_bouton5();
+  allumer_tout();
 }
 
 int test_interrupt()
