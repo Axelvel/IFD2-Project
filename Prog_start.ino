@@ -1,3 +1,4 @@
+#include <Arduino.h>
 // décalration des constantes
 
 const int bouton1 = 48;
@@ -325,14 +326,14 @@ int test_interrupt_en_jeu(int temps)
 
 void chenillard()
 {
-  int i=0, j=0, inter=0, T[16]={22,23,24,25,26,31,36,41,46,45,44,43,42,37,32,27}; // se référer au exel
+  int i=0, j=0, inter=0, T[16]={22,23,24,25,26,31,36,41,46,45,44,43,42,37,32,27}; // se référer au excel
 
   eteindre_tout();
-  for (int i=0; i<=6; i++)
+  for (i = 0; i<=6; i++)
   {
     digitalWrite(T[i], HIGH);
   }
-
+ i = 0;
   while (inter == 0)
   {
     j=0;
@@ -370,27 +371,36 @@ void setup() {
   Serial.begin(9600);
   
   //Setup pins
-  for (int i = 22; i =< 46; i++){
+  for (int i = 22; i <= 46; i++){
         pinMode(i, OUTPUT);  //Ou OUTPUT_OPEN_DRAIN
+
       }
   
   //Setup Bouttons
-    for (int i = 48; i =< 53; i++){
+    for (int i = 48; i <= 53; i++){
         pinMode(i, INPUT);
+
       }
     pinMode(8, INPUT);
-    pinMode(9, INPUT);       
+    pinMode(9, INPUT);  
+     
   
     
   allumer_tout();
-  delay(5000);
+  delay(1000);
   eteindre_tout();
+  delay(1000);
+
+    Serial.println("test2");
 }
 
 
 
 void loop() {
   // put your main code here, to run repeatedly:
+
+   Serial.println("test");
+
   if (tout_on() == 0)
   {
     chenillard();
