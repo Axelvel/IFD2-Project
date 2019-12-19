@@ -38,14 +38,14 @@ int etatboutonprec8 = 0;
 void allumer_tout() {
   for (int i=22;i<=46;i++)
   {
-    digitalWrite(i, HIGH);
+    digitalWrite(i, LOW);
   }
 }
 
 void eteindre_tout(){
     for (int i=22;i<=46;i++)
   {
-    digitalWrite(i, LOW);
+    digitalWrite(i, HIGH);
   }
 }
 
@@ -55,7 +55,7 @@ int tout_on()
 
   while (i<=46 && etat==1)
   {
-    if (digitalRead(i)==LOW)
+    if (digitalRead(i)==HIGH)
     {
       etat=0;
     }
@@ -65,69 +65,69 @@ int tout_on()
 }
 
 void sequence_bouton1() {
-  digitalWrite(22, HIGH);
-  digitalWrite(23, HIGH);
-  digitalWrite(24, HIGH);
-  digitalWrite(25, HIGH);
-  digitalWrite(26, HIGH);
-  digitalWrite(42, LOW);
+  digitalWrite(22, LOW);
+  digitalWrite(23, LOW);
+  digitalWrite(24, LOW);
+  digitalWrite(25, LOW);
+  digitalWrite(26, LOW);
+  digitalWrite(42, HIGH);
 }
 
 void sequence_bouton2() {
-  digitalWrite(32, HIGH);
-  digitalWrite(33, HIGH);
-  digitalWrite(34, HIGH);
-  digitalWrite(35, HIGH);
-  digitalWrite(36, HIGH);
-  digitalWrite(27, LOW);
+  digitalWrite(32, LOW);
+  digitalWrite(33, LOW);
+  digitalWrite(34, LOW);
+  digitalWrite(35, LOW);
+  digitalWrite(36, LOW);
+  digitalWrite(27, HIGH);
 }
 
 void sequence_bouton3() {
-  digitalWrite(27, HIGH);
-  digitalWrite(28, HIGH);
-  digitalWrite(29, HIGH);
-  digitalWrite(30, HIGH);
-  digitalWrite(31, HIGH);
-  digitalWrite(22, LOW);
+  digitalWrite(27, LOW);
+  digitalWrite(28, LOW);
+  digitalWrite(29, LOW);
+  digitalWrite(30, LOW);
+  digitalWrite(31, LOW);
+  digitalWrite(22, HIGH);
 }
 
 void sequence_bouton4() {
-  digitalWrite(37, HIGH);
-  digitalWrite(38, HIGH);
-  digitalWrite(39, HIGH);
-  digitalWrite(40, HIGH);
-  digitalWrite(41, HIGH);
-  digitalWrite(32, LOW);
-  digitalWrite(34, LOW);
+  digitalWrite(37, LOW);
+  digitalWrite(38, LOW);
+  digitalWrite(39, LOW);
+  digitalWrite(40, LOW);
+  digitalWrite(41, LOW);
+  digitalWrite(32, HIGH);
+  digitalWrite(34, HIGH);
 }
 
 void sequence_bouton5() {
-  digitalWrite(22, HIGH);
-  digitalWrite(27, HIGH);
-  digitalWrite(32, HIGH);
-  digitalWrite(37, HIGH);
+  digitalWrite(22, LOW);
+  digitalWrite(27, LOW);
+  digitalWrite(32, LOW);
+  digitalWrite(37, LOW);
 }
 
 void sequence_bouton6() {
-  digitalWrite(22, HIGH);
-  digitalWrite(27, HIGH);
-  digitalWrite(32, HIGH);
-  digitalWrite(37, HIGH);
-  digitalWrite(42, HIGH);
-  digitalWrite(23, LOW);
-  digitalWrite(28, LOW);
-  digitalWrite(33, LOW);
-  digitalWrite(38, LOW);
-  digitalWrite(43, LOW);
+  digitalWrite(22, LOW);
+  digitalWrite(27, LOW);
+  digitalWrite(32, LOW);
+  digitalWrite(37, LOW);
+  digitalWrite(42, LOW);
+  digitalWrite(23, HIGH);
+  digitalWrite(28, HIGH);
+  digitalWrite(33, HIGH);
+  digitalWrite(38, HIGH);
+  digitalWrite(43, HIGH);
 }
 
 void sequence_bouton7() {
-  digitalWrite(42, HIGH);
-  digitalWrite(43, HIGH);
-  digitalWrite(44, HIGH);
-  digitalWrite(45, HIGH);
-  digitalWrite(46, HIGH);
-  digitalWrite(37, LOW);
+  digitalWrite(42, LOW);
+  digitalWrite(43, LOW);
+  digitalWrite(44, LOW);
+  digitalWrite(45, LOW);
+  digitalWrite(46, LOW);
+  digitalWrite(37, HIGH);
 }
 
 void f_piege(){
@@ -331,7 +331,7 @@ void chenillard()
   eteindre_tout();
   for (i = 0; i<=6; i++)
   {
-    digitalWrite(T[i], HIGH);
+    digitalWrite(T[i], LOW);
   }
  i = 0;
   while (inter == 0)
@@ -341,7 +341,7 @@ void chenillard()
     {
       i=0;
     }
-    digitalWrite(T[i], LOW);
+    digitalWrite(T[i], HIGH);
 
     if (i+7>15)
     {
@@ -350,7 +350,7 @@ void chenillard()
     }
     else
     {
-      digitalWrite(T[i], HIGH);
+      digitalWrite(T[i], LOW);
     }
     i++;
     inter=test_interrupt();   
@@ -383,15 +383,8 @@ void setup() {
       }
     pinMode(8, INPUT);
     pinMode(9, INPUT);  
-     
+   eteindre_tout();   
   
-    
-  allumer_tout();
-  delay(1000);
-  eteindre_tout();
-  delay(1000);
-
-    Serial.println("test2");
 }
 
 
@@ -399,25 +392,4 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-   Serial.println("test");
-
-  if (tout_on() == 0)
-  {
-    chenillard();
-    int temps = 0, piege = 0;
-    while (temps<30000 || piege==1)
-    {
-      temps = test_interrupt_en_jeu(temps);
-      if (temps<0)
-      {
-        piege = 1;
-      }
-      delay(100);
-      temps += 100;
-    }
-  }
-  else
-  {
-    //déverouiller le verrou grâce au Node Red
-  }
 }
