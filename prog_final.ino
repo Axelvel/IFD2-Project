@@ -250,21 +250,31 @@ void soluce(){
   return inter;
 }*/
 
-int test_interrupt_en_jeu(void)
+void test_etat_ch(void)
+{
+  if (etat == 0)
+  {
+    eteindre_tout();
+  }
+}
+
+void test_interrupt_en_jeu(void)
 {
 
   //Bouton1
   
   if (digitalRead(bouton1) == HIGH) {
     if (!stateb1) {
-     Serial.print("1");
+      Serial.print("1");
+      test_etat_ch();
       f_bouton1();
       etat = 1;
       stateb1 = true;
     }
   } else {
     if (stateb1) {
-   Serial.print("1"); // changement est actif donc lancer le f_bouton
+    Serial.print("1"); // changement est actif donc lancer le f_bouton
+    test_etat_ch();
     f_bouton1();
     etat = 1;
     stateb1 = false;
@@ -275,6 +285,7 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton2) == HIGH) {
     if (!stateb2) {
+      test_etat_ch();
       f_bouton2();
       Serial.print("2");
       etat = 2;
@@ -282,6 +293,7 @@ int test_interrupt_en_jeu(void)
     }
   } else {
     if (stateb2) {
+    test_etat_ch();
     f_bouton2();
     Serial.print("2");
     etat = 2;
@@ -293,6 +305,7 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton3) == HIGH) {
     if (!stateb3) {
+      test_etat_ch();
       f_bouton3();
       Serial.print("3");
       etat = 3;
@@ -300,6 +313,7 @@ int test_interrupt_en_jeu(void)
     }
   } else {
     if (stateb3) {
+    test_etat_ch();
     f_bouton3();
     Serial.print("3");
     etat = 3;
@@ -311,6 +325,7 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton4) == HIGH) {
     if (!stateb4) {
+      test_etat_ch();
       f_bouton4();
       Serial.print("4");
       etat = 4;
@@ -318,10 +333,11 @@ int test_interrupt_en_jeu(void)
     }
   } else {
     if (stateb4) {
-    f_bouton4();
-    Serial.print("4");
-    etat = 4;
-    stateb4 = false;
+      test_etat_ch();
+      f_bouton4();
+      Serial.print("4");
+      etat = 4;
+      stateb4 = false;
     }
   }
 
@@ -329,13 +345,15 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton5) == HIGH) {
     if (!stateb5) {
-      f_bouton5();
+      test_etat_ch();
+     f_bouton5();
       Serial.print("5");
       etat = 5;
       stateb5 = true;
     }
   } else {
     if (stateb5) {
+      test_etat_ch();
     f_bouton5();
     Serial.print("5");
     etat = 5;
@@ -347,6 +365,7 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton6) == HIGH) {
     if (!stateb6) {
+      test_etat_ch();
       f_bouton6();
       Serial.print("6");
       etat = 6;
@@ -354,6 +373,7 @@ int test_interrupt_en_jeu(void)
     }
   } else {
     if (stateb6) {
+      test_etat_ch();
     f_bouton6();
     Serial.print("6");
     etat = 6;
@@ -365,14 +385,16 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton7) == HIGH) {
     if (!stateb7) {
+      test_etat_ch();
       f_bouton7();
-      etat = 7;
+      etat = 0;
       stateb7 = true;
     }
   } else {
     if (stateb7) {
+      test_etat_ch();
     f_bouton7();
-    etat = 7;
+    etat = 0;
     stateb7 = false;
     }
   }
@@ -382,6 +404,7 @@ int test_interrupt_en_jeu(void)
 
     if (digitalRead(bouton8) == HIGH) {
     if (!stateb8) {
+      test_etat_ch();
       f_bouton8();
       Serial.print("8");
       etat = 8;
@@ -389,6 +412,7 @@ int test_interrupt_en_jeu(void)
     }
   } else {
     if (stateb8) {
+      test_etat_ch();
     f_bouton8();
     Serial.print("8");
     etat = 8;
@@ -396,7 +420,6 @@ int test_interrupt_en_jeu(void)
     }
 }
      
-
 
 }
 
@@ -469,17 +492,21 @@ void loop() {
   if (tout_on() == 0)
   {
     if (etat==0) // test état du jeu, 0 -> en attente, !=0, en jeu
-    { 
+    { //Serial.println("reset1");
+     /// Serial.println(reset);
       if (reset==1) // test si il faut initialiser le chenillard
       {
           eteindre_tout();
           reset = 0; // permet d'initialiser qu'une seul fois
           temps = 0; // remet le temps à 0 pour le prochain essai de jeu
+         Serial.println("reset");
           for (int k = 0; k<=6; k++) // allume les 7 premières LED
             {
               digitalWrite(T[k], LOW);
             }
           i = 0;
+        //  Serial.println("reset2");
+        //  Serial.println(reset);
       }
       j=i+7; //cible la tête du chenillard
       if (i==16) //renvoie le pointeur de queue au début du tableau si il atteint la fin
@@ -497,37 +524,46 @@ void loop() {
         digitalWrite(T[j], LOW);
       }
       i++; //incrémentation du chenillard
-      etat = test_interrupt_en_jeu(); //mise à jour de l'état
-      delay(30);
+      test_interrupt_en_jeu();//mise à jour de l'état
+     
+      Serial.println(etat);
+      delay(250);
     }
     else
-    {
+    { 
+      Serial.println(temps);
+      Serial.println(etat);
       if (temps >= 30000) // test si le temps d'inactivité n'est pas dépassé
       {
+        Serial.println("test");
         f_piege(); //lance le piège
         etat = 0; //remet l'état au chenillard
+        Serial.println(etat);
+        temps = 0;
         reset = 1; //active le reset au prochain loop
       }
       else
       {
         test_push = etat; //vérifie si un bouton a été enclenché
-        etat = test_interrupt_en_jeu();
-        if (test_push != etat) //reset le temps quand un bouton a été enclenché
+        test_interrupt_en_jeu();
+        if (test_push != etat) //reset le temps equand un bouton a été enclenché
         {
           temps = 0;
+          Serial.println("temps");
         }
         if (etat == 0) //active le reset pour le prochain loop
         {
           reset = 1;
         }
         temps += 100;
-        delay(10);
-        ;
+        delay(100);
+        
       }
     }
   }
   else
   {
+    Serial.println("Win");
     //déverouiller le cadenas via node red
   }
 }
