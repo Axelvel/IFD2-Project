@@ -39,7 +39,7 @@ int etat = 0, reset = 1, test_push = 0, temps = 0, i=0, j=0, T[16]={22,23,24,25,
 void allumer_tout() {
   for (int k=22;k<=46;k++)
   {
-    digitalWrite(i, LOW);
+    digitalWrite(k, LOW);
   }
 }
 
