@@ -541,7 +541,6 @@ void loop()
             i++; //incrémentation du chenillard
             test_interrupt_en_jeu();//mise à jour de l'état
 
-            Serial.println(etat);
             delay(250);
         }
         else
@@ -557,7 +556,7 @@ void loop()
             {
                 test_push = etat; //vérifie si un bouton a été enclenché
                 test_interrupt_en_jeu();
-                if (test_push != etat) //reset le temps equand un bouton a été enclenché
+                if (test_push != etat) //reset le temps quand un bouton a été enclenché
                 {
                     temps = 0;
                 }
