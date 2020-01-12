@@ -442,6 +442,7 @@ void serialEvent3()
             {
                 digitalWrite(PIN_LED, HIGH);
                 commandeNodeRed = 'TERMINER';
+                soluce();
 
             }
             else if (inString.indexOf("RESET")>0)
